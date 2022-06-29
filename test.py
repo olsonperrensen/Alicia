@@ -16,6 +16,7 @@ opt_fields = list()
 req_fields_vals = list()
 opt_fields_vals = list()
 column_widths = []
+gs1_ids = dict()
 # Sheets
 dirty_wb = openpyxl.load_workbook('required_files\All SKUs 21.06.xlsx')
 dirty_sheets = dirty_wb.sheetnames
@@ -27,7 +28,9 @@ glossary_sheet = glossary_wb[glossary_sheets[2]]
 tmp_g_brick = 0
 # Find unique categories
 for row in dirty_sheet:
+    id = dirty_sheet.cell(column = 1, row = i).value
     brick = dirty_sheet.cell(column = 5, row = i).value
+    gs1_ids[id] = [i,brick]
     i += 1
     if(brick is None or brick is NoneType):
         continue
@@ -44,7 +47,7 @@ for row in glossary_sheet:
             clean_wb = Workbook()
             clean_ws = clean_wb.active
             # Write tab with req and opt for one brick
-            clean_ws.append(["BRICK:",tmp_g_brick,"v0.1","Script last updated:",datetime.today().strftime('%Y-%m-%d %H:%M:%S')])
+            clean_ws.append(["GS1 item number (GTIN):","","BRICK CAT:",tmp_g_brick,"v0.1","Script last executed:",datetime.today().strftime('%Y-%m-%d %H:%M:%S')])
             clean_ws.append(req_fields)
             clean_ws.append(["data goes here"])
             clean_ws.append(opt_fields)
@@ -75,6 +78,14 @@ for row in glossary_sheet:
         if(glossary_sheet.cell(column=3,row = j).value == 1):
             # Attach (req) atr to list
             req_fields.append((glossary_sheet.cell(column=6,row = j).value).upper())
+            for col in dirty_sheet["A1:AWK1"]:
+                for k,atr in enumerate(col):
+                    for req_field in req_fields:
+                        if req_field.startswith(atr.value.upper()):
+                            gs1_ids += [dirty_sheet.cell(column=k+1,row = gs1_ids[id][0]).value]
+            for opt_field in opt_fields:
+                                    if opt_field.startswith(atr.value.lower()):
+                                        gs1_ids += [dirty_sheet.cell(column=k+1,row = gs1_ids[id][0]).value]
         elif(glossary_sheet.cell(column=3,row = j).value == 0):
             # Attach (opt) atr to list
             opt_fields.append((glossary_sheet.cell(column=6,row = j).value).lower())
