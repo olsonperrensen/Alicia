@@ -16,6 +16,9 @@ ws.append(["Fruit", "2011", "2012", "2013", "2014"])
 for row in data:
     ws.append(row)
 
+for row in ws["A1:222"][0]:
+    print(row)
+
 tab = Table(displayName="Table1", ref="A1:E5")
 
 # Add a default style with striped rows and banded columns
