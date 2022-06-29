@@ -17,10 +17,10 @@ req_fields_vals = list()
 opt_fields_vals = list()
 column_widths = []
 # Sheets
-dirty_wb = openpyxl.load_workbook('All SKUs 21.06.xlsx')
+dirty_wb = openpyxl.load_workbook('required_files\All SKUs 21.06.xlsx')
 dirty_sheets = dirty_wb.sheetnames
 dirty_sheet = dirty_wb[dirty_sheets[0]]
-glossary_wb = openpyxl.load_workbook('202205-GS1-Datamodel-DHZTD-3.1.19_EN.xlsx')
+glossary_wb = openpyxl.load_workbook('required_files\glossary.xlsx')
 glossary_sheets = glossary_wb.sheetnames
 glossary_sheet = glossary_wb[glossary_sheets[2]]
 # Temp
@@ -65,7 +65,7 @@ for row in glossary_sheet:
     
             for i, column_width in enumerate(column_widths,1):  # ,1 to start at 1
                 clean_ws.column_dimensions[get_column_letter(i)].width = column_width
-            clean_wb.save(str(tmp_g_brick)+".xlsx")
+            clean_wb.save("results\\"+str(tmp_g_brick)+".xlsx")
             # Clean lists for new brick
             req_fields = list()
             opt_fields = list()
