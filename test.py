@@ -34,8 +34,10 @@ for row in glossary:
 for i, row in enumerate(allsku):
     if i == 0: # skip headers
         continue
-
     categoryid = str(row[4].value)
+    if categoryid not in categories.keys():
+        categoryid = '10000334' # UNKNOWN CAT ALL TREATED AS : Bath/shower accessory type
+
     if not os.path.exists(categoryid):
         os.mkdir(categoryid)
 
