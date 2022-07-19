@@ -64,7 +64,11 @@ for i, row in enumerate(allsku):
     # req_vals = [cell.value for i, cell in enumerate(row) if any([required.lower().startswith(headers[i].lower()) for required in req])]
 
     opt = [column for column, priority in categories[categoryid] if priority == 0]
-    opt_vals = [cell.value for i, cell in enumerate(row) if headers[i] in opt]
+    opt_vals = list()
+    for i, cell in enumerate(row):
+        for option in opt:
+            if headers[i].lower().startswith(option.lower()):
+                opt_vals.append(cell.value)
 
     print(len(req))
     print(len(req_vals))
