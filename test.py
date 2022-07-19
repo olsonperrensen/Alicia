@@ -59,19 +59,30 @@ for i, row in enumerate(allsku):
         else:
             continue
         local_req.remove(to_remove)
-        req_vals.append(cell.value)
+        if cell.value is None:
+                    opt_vals.append("🚫")
+        else:
+            req_vals.append(cell.value)
+        
 
     # req_vals = [cell.value for i, cell in enumerate(row) if any([required.lower().startswith(headers[i].lower()) for required in req])]
-
+    local_opt = headers[::]
     opt = [column for column, priority in categories[categoryid] if priority == 0]
-    opt_vals = list()
+    local_opt = opt[::]
+    opt_vals = []
     for i, cell in enumerate(row):
-        for option in opt:
+        for option in local_opt:
             if headers[i].lower().startswith(option.lower()):
-                opt_vals.append(cell.value)
+                if cell.value is None:
+                    opt_vals.append("🚫")
+                else:
+                    opt_vals.append(cell.value)
+                break
+            else:
+                continue
 
-    print(len(req))
-    print(len(req_vals))
+    print(len(opt))
+    print(len(opt_vals))
     print()
     clean_wb = Workbook()
     clean_ws = clean_wb.active
